@@ -7,6 +7,8 @@
 //
 
 #import "ViewController.h"
+#import <ModelIO/ModelIO.h>
+#import <SceneKit/ModelIO.h>
 
 @interface ViewController () <ARSCNViewDelegate>
 
@@ -27,18 +29,21 @@
     self.sceneView.showsStatistics = YES;
     
     // Create a new scene
-    SCNScene *scene = [SCNScene sceneNamed:@"art.scnassets/ship.scn"];
-    
+    SCNScene *scene = [SCNScene sceneNamed:@"art.scnassets/Test.dae"];
     // Set the scene to the view
-    self.sceneView.scene = scene;
+    //Если использовать эту строчку - это не добавляет модель, а заменяет всю сцену
+//    self.sceneView.scene = scene;
+    //Так модель добавляется
+    [self.sceneView.scene.rootNode addChildNode:scene.rootNode];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     // Create a session configuration
-    ARWorldTrackingConfiguration *configuration = [ARWorldTrackingConfiguration new];
+    ARWorldTrackingConfiguration *configuration = [[ARWorldTrackingConfiguration alloc] init];
 
+//    configuration.planeDetection = ARPlaneDetectionHorizontal;
     // Run the view's session
     [self.sceneView.session runWithConfiguration:configuration];
 }
